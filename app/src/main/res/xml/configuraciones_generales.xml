@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/main_settings"
+        >
+        <ListPreference
+            android:title="@string/dias_cotizaciones"
+            android:key="days_pref"
+            android:entries="@array/array_days_entries"
+            android:entryValues="@array/array_days"
+            android:defaultValue="0"
+            />
+
+        <CheckBoxPreference
+            android:title="@string/solo_este_suaruio"
+            android:key="solo_vendedor_pref"
+            android:summary="@string/solo_este_suaruio_summ"
+            />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:title="@string/other_settings"
+        >
+        <EditTextPreference android:title="Servidor"
+            android:key="server_pref"
+            android:inputType="text"
+            android:defaultValue="0.0.0.0"
+            android:icon="@drawable/ic_server"
+            />
+
+        <EditTextPreference android:title="Base de datos"
+            android:key="bdname_pref"
+            android:inputType="text|textCapCharacters"
+            android:icon="@drawable/ic_database"
+            />
+
+        <EditTextPreference android:title="Usuario"
+            android:key="user_pref"
+            android:inputType="text"
+            android:icon="@drawable/ic_account_user"
+            />
+
+        <EditTextPreference
+            android:title="Contraseña"
+            android:key="pass_pref"
+            android:inputType="textWebPassword"
+            android:icon="@drawable/ic_password"
+            />
+
+        <EditTextPreference
+            android:title="Puerto"
+            android:key="port_pref"
+            android:inputType="numberSigned"
+            android:maxLength="4"
+            android:defaultValue="0000"
+            android:icon="@drawable/ic_port_numeric"
+            />
+
+
+    </PreferenceCategory>
+</PreferenceScreen>
+

@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Pruebas</string>
+
+
+    <string name="preferencias_usuario">user_prefrences</string>
+    <string name="nombre">Usuario</string>
+    <string name="nombre_summ">Escriba aquí su nombre de usuario</string>
+    <string name="permitir_accesso">Guardar datos del usuario</string>
+    <string name="permitir_accesso_summ">Guardar el nombre del usuario</string>
+    <string name="config">Configuracion</string>
+    <string name="settings_str">Ajustes</string>
+    <string name="main_settings">Configuraciones Generales</string>
+    <string name="db_settings">Base de datos</string>
+    <string name="other_settings">Otras configuraciones</string>
+    <string name="set">Establecida</string>
+    <string name="noSet">No establecida.</string>
+    <string name="dias_cotizaciones">Mostrar cotizaciones desde hoy hasta</string>
+    <string name="no_limit">No hay límites de días.</string>
+    <string name="string_format_days">%d días</string>
+    <string name="mantener_siempre">Mantener en línea</string>
+    <string name="solo_este_suaruio">Mostrar cotizaciones</string>
+    <string name="solo_este_suaruio_summ">Mostrar las cotizaciones hechas por este vendedor</string>
+    <string name="db_settings_summ">Edite su conexión con la base de datos.</string>
+    <string name="ok">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="max_cotizaciones">Maximo de cotizaciones en la lista</string>
+    <string name="share">Compartir</string>
+    <string name="share_msg">Compartir con:</string>
+
+    <string-array name="array_days">
+        <item>0</item>
+        <item>30</item>
+        <item>60</item>
+        <item>90</item>
+    </string-array>
+
+    <string-array name="array_days_entries">
+        <item>Sin límite (Todas)</item>
+        <item>30 días (1 mes)</item>
+        <item>60 días (2 meses)</item>
+        <item>90 días (3 meses)</item>
+    </string-array>
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference android:title="Servidor"
+        android:key="server_pref"
+        android:inputType="text"
+        android:defaultValue="0.0.0.0"
+        android:icon="@drawable/ic_server"
+        />
+
+    <EditTextPreference android:title="Base de datos"
+        android:key="bdname_pref"
+        android:inputType="text|textCapCharacters"
+        android:icon="@drawable/ic_database"
+        />
+
+    <EditTextPreference android:title="Usuario"
+        android:key="user_pref"
+        android:inputType="text"
+        android:icon="@drawable/ic_account_user"
+        />
+
+    <EditTextPreference
+        android:title="Contraseña"
+        android:key="pass_pref"
+        android:inputType="textWebPassword"
+        android:icon="@drawable/ic_password"
+        />
+
+    <EditTextPreference
+        android:title="Puerto"
+        android:key="port_pref"
+        android:inputType="numberSigned"
+        android:maxLength="4"
+        android:defaultValue="0000"
+        android:icon="@drawable/ic_port_numeric"
+        />
+
+
+</PreferenceScreen>
