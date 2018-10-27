@@ -5,21 +5,21 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.animation.LinearInterpolator;
 
 public class ZoomListener implements View.OnTouchListener, GestureDetector.OnDoubleTapListener {
-    private static final float MAX_SCALE = 5.0f;
+    private static final float MAX_SCALE = 4.0f;
     private static final float MIN_SCALE = 1.0f;
-    private boolean zoom;
+    private static final float MAX_POSITION_POSITIVE = 150.0f;
+    private static final float MAX_POSITION_NEGATIVE = -150.0f;
+    private static final long DELAY_FOR_RESET = 500; //half minute
     private float oldSpacing = 1.0f;
     private float positionX, positionY;
     private float initialX, initialY;
+    private float lastDistanceX, lastDistanceY;
+    private boolean zoom;
     private View mView;
-
     private GestureDetector gestureDetector;
-
-    int numberOfTaps = 0;
-    long lastTapTimeMs = 0;
-    long touchDownMs = 0;
 
 
     public ZoomListener() {
@@ -40,11 +40,27 @@ public class ZoomListener implements View.OnTouchListener, GestureDetector.OnDou
 
         switch (motionEvent.getAction() & motionEvent.getActionMasked()){
             case MotionEvent.ACTION_UP:
+                /*positionX = view.getX();
+                positionY = view.getY();
+
+
+                if(isOverLimit(positionX) && isOverLimit(positionY)){
+                    view.animate().x(positionX + lastDistanceX).y(positionY + lastDistanceY)
+                            .setInterpolator(new LinearInterpolator()).setDuration(0);
+                }else if(isOverLimit(positionX)){
+                    view.animate().x(lastDistanceX).setInterpolator(new LinearInterpolator());
+                }else if(isOverLimit(positionY)){
+                    view.animate().x( lastDistanceX).setInterpolator(new LinearInterpolator());
+                }else{
+                    view.animate().x(positionX + lastDistanceX).y(positionY + lastDistanceY)
+                            .setInterpolator(new LinearInterpolator()).setDuration(0);
+                }*/
+
+                //Log.d("zoomListener", String.format("x: %f(%s), y: %f(%s)", positionX, isOverLimit(positionX), positionY, isOverLimit(positionY)));
                 setZoom(false);
                 break;
 
             case MotionEvent.ACTION_DOWN:
-                touchDownMs = System.currentTimeMillis();
                 initialX = motionEvent.getX();
                 initialY = motionEvent.getY();
                 setZoom(false);
@@ -54,16 +70,20 @@ public class ZoomListener implements View.OnTouchListener, GestureDetector.OnDou
                 oldSpacing = spacing(motionEvent);
                 setZoom(true);
 
-                Log.d("zoomListener", String.format("oldSpacing is: %f",oldSpacing));
+               // Log.d("zoomListener", String.format("oldSpacing is: %f",oldSpacing));
                 break;
 
             case MotionEvent.ACTION_MOVE:
-
                 positionX = view.getX();
                 positionY = view.getY();
 
+
                 float distanceX = motionEvent.getX() - initialX;
                 float distanceY = motionEvent.getY() - initialY;
+
+
+                //distanceX = isOverLimit(distanceX) ? lastDistanceX : distanceX;
+                //distanceY = isOverLimit(distanceY) ? lastDistanceY : distanceY;
 
                 if(isZoom()){
                     float spacing = spacing(motionEvent);
@@ -80,22 +100,32 @@ public class ZoomListener implements View.OnTouchListener, GestureDetector.OnDou
                        view.setScaleY(MIN_SCALE);
                    }
 
-                    Log.d("zoomListener", String.format("scale: %f",scale));
-                //}else if(motionEvent.getPointerCount() == 1){
 
                     if(view.getScaleX() > MIN_SCALE){
-                        view.setX(positionX + distanceX);
-                        view.setY(positionY + distanceY);
+                        //view.setX(positionX + distanceX);
+                        //view.setY(positionY + distanceY);
+                        view.animate().x(positionX + distanceX).y(positionY + distanceY)
+                                .setInterpolator(new LinearInterpolator()).setDuration(0);
                     }else{
-                        view.setX(0.0f);
-                        view.setY(0.0f);
+                        //view.setX(0.0f);
+                        //view.setY(0.0f);
+
+                        view.animate().x(0.0f).y(0.0f).setInterpolator(new LinearInterpolator()).setDuration(0);
                     }
 
-                    Log.d("zoomListener", String.format("x: %f, y: %f", positionX, positionY));
+
                 }else if(view.getScaleX() > MIN_SCALE){
-                    view.setX(positionX + distanceX);
-                    view.setY(positionY + distanceY);
+                    //view.setX(positionX + distanceX);
+                    //view.setY(positionY + distanceY);
+                    view.animate().x(positionX + distanceX).y(positionY + distanceY)
+                            .setInterpolator(new LinearInterpolator()).setDuration(0);
                 }
+
+
+                lastDistanceX = distanceX;
+                lastDistanceY = distanceY;
+                //Log.d("zoomListener", String.format("x: %f, y: %f", positionX, positionY));
+                //Log.d("zoomListener", String.format("dx: %f, dy: %f", distanceX, distanceY));
                 break;
 
             default:
@@ -126,6 +156,23 @@ public class ZoomListener implements View.OnTouchListener, GestureDetector.OnDou
         return (float) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     }
 
+    private float limitPosition(float value){
+       if(value > MAX_POSITION_POSITIVE){
+            value = MAX_POSITION_POSITIVE;
+        }else if(value < MAX_POSITION_NEGATIVE){
+            value = MAX_POSITION_POSITIVE;
+        }
+        return value;
+    }
+
+
+    private boolean isOverLimit(float value){
+        if(value > MAX_POSITION_POSITIVE || value < MAX_POSITION_NEGATIVE){
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean onSingleTapConfirmed(MotionEvent motionEvent) {
         return false;
@@ -133,13 +180,11 @@ public class ZoomListener implements View.OnTouchListener, GestureDetector.OnDou
 
     @Override
     public boolean onDoubleTap(MotionEvent motionEvent) {
-        Log.d("doubleTap", "true");
-
-        mView.setScaleX(MIN_SCALE);
-        mView.setScaleY(MIN_SCALE);
-
-        mView.setX(0.0f);
-        mView.setY(0.0f);
+        mView.animate()
+                .scaleX(MIN_SCALE).scaleY(MIN_SCALE)
+                .x(0.0f).y(0.0f)
+                .setInterpolator(new LinearInterpolator())
+                .setDuration(DELAY_FOR_RESET);
         return true;
     }
 

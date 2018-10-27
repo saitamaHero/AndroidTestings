@@ -34,6 +34,8 @@ public class ShowPhotoAcitivity extends AppCompatActivity {
         uri = Uri.fromFile(new File(DIRECTORIO_FOTOS_ARTICULOS, TEST_FILENAME));
         imageView.setImageURI(uri);
 
+        //imageView.setX(-500.0f);
+        //imageView.setY(-500.0f);
 
 
         GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener());
@@ -68,6 +70,7 @@ public class ShowPhotoAcitivity extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.putExtra(Intent.EXTRA_STREAM, uri);
                 startActivity(Intent.createChooser(intent, getString(R.string.share_msg)));
+
                 return true;
 
                 default:
