@@ -1,5 +1,6 @@
 package com.mobile.proisa.pruebas.Actividades;
 
+import android.graphics.Rect;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -8,6 +9,7 @@ import android.view.ViewConfiguration;
 import android.view.animation.LinearInterpolator;
 
 public class ZoomListener implements View.OnTouchListener, GestureDetector.OnDoubleTapListener {
+    private static final String TAG = "zoomListener";
     private static final float MAX_SCALE = 4.0f;
     private static final float MIN_SCALE = 1.0f;
     private static final float MAX_POSITION_POSITIVE = 150.0f;
@@ -36,6 +38,7 @@ public class ZoomListener implements View.OnTouchListener, GestureDetector.OnDou
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         float scale;
+        //view.getContext().getResources()
         mView = view;
 
         switch (motionEvent.getAction() & motionEvent.getActionMasked()){
@@ -102,21 +105,14 @@ public class ZoomListener implements View.OnTouchListener, GestureDetector.OnDou
 
 
                     if(view.getScaleX() > MIN_SCALE){
-                        //view.setX(positionX + distanceX);
-                        //view.setY(positionY + distanceY);
                         view.animate().x(positionX + distanceX).y(positionY + distanceY)
                                 .setInterpolator(new LinearInterpolator()).setDuration(0);
                     }else{
-                        //view.setX(0.0f);
-                        //view.setY(0.0f);
-
                         view.animate().x(0.0f).y(0.0f).setInterpolator(new LinearInterpolator()).setDuration(0);
                     }
 
 
                 }else if(view.getScaleX() > MIN_SCALE){
-                    //view.setX(positionX + distanceX);
-                    //view.setY(positionY + distanceY);
                     view.animate().x(positionX + distanceX).y(positionY + distanceY)
                             .setInterpolator(new LinearInterpolator()).setDuration(0);
                 }
@@ -124,6 +120,8 @@ public class ZoomListener implements View.OnTouchListener, GestureDetector.OnDou
 
                 lastDistanceX = distanceX;
                 lastDistanceY = distanceY;
+
+                Log.d(TAG, String.format("x: %f, y: %f", positionX + distanceX, positionY + distanceY));
                 //Log.d("zoomListener", String.format("x: %f, y: %f", positionX, positionY));
                 //Log.d("zoomListener", String.format("dx: %f, dy: %f", distanceX, distanceY));
                 break;
